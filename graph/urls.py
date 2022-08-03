@@ -10,5 +10,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.plot, name='plot'),
+    path('', views.plot,name='plot'),
+    path('spc/', views.plot,name='spc'),
+    path('multigraph/', views.multigraph,name='multigraph'),
+    path('contour/', views.contour,name='contour'),
 ]
