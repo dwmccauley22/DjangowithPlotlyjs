@@ -21,9 +21,16 @@
 const getColumn = (anArray, columnNumber) => anArray.map(row => row[columnNumber])
 var df_json = JSON.parse("{{df|safe}}")
 var df_v_json = JSON.parse("{{dfv|safe}}")
-var yvar = getColumn(df_json,0)
 
+
+var yvar = getColumn(df_json,0)
 var xvar = Array(yvar.length)
+
+var yvarv = getColumn(df_v_json,0)
+var xvarv = getColumn(df_v_json,1)
+
+console.log(xvarv)
+console.log(yvarv)
 for(let i = 0; i<yvar.length;i++)
 {
     xvar[i] = i
@@ -53,8 +60,8 @@ var Data = {
 
 var Viol = {
   type: 'scatter',
-  x: [6,9],
-  y: [-7,8],
+  x: xvarv,
+  y: yvarv,
   mode: 'markers',
   name: 'Violation',
   showlegend: true,
@@ -121,7 +128,7 @@ var layout = {
     zeroline: false
   },
   yaxis: {
-    range: [0,1],
+    range: [-10,1],
     zeroline: false
   },
   xaxis2: {
