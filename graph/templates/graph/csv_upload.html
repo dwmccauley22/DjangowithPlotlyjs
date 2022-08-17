@@ -21,23 +21,17 @@
 const getColumn = (anArray, columnNumber) => anArray.map(row => row[columnNumber])
 var df_json = JSON.parse("{{df|safe}}")
 var df_v_json = JSON.parse("{{dfv|safe}}")
-
-
+var mean_json = JSON.parse("{{mean|safe}}")
+var stdv_json = JSON.parse("{{stdv|safe}}")
 var yvar = getColumn(df_json,0)
 var xvar = Array(yvar.length)
 
 var yvarv = getColumn(df_v_json,0)
 var xvarv = getColumn(df_v_json,1)
-
-console.log(xvarv)
-console.log(yvarv)
 for(let i = 0; i<yvar.length;i++)
 {
     xvar[i] = i
 }
-
-console.log(xvar)
-console.log(yvar)
 var Data = {
   type: 'scatter',
   x: xvar,
@@ -73,11 +67,10 @@ var Viol = {
     symbol: 'circle-open'
   }
 }
-
 var CL = {
   type: 'scatter',
-  x: [0, 1, null, 0, 1],
-  y: [8, 8, null, 1, 1],
+  x: [0, xvar.length, null, 0, xvar.length],
+  y: [(mean_json[0] + (3 * stdv_json[0])), (mean_json[0] + (3 * stdv_json[0])), null, (mean_json[0] - (3 * stdv_json[0])), (mean_json[0] - (3 * stdv_json[0]))],
   mode: 'lines',
   name: 'LCL/UCL',
   showlegend: true,
@@ -90,8 +83,8 @@ var CL = {
 
 var Centre = {
   type: 'scatter',
-  x: [0, 1],
-  y: [0, 0],
+  x: [0, xvar.length],
+  y: [mean_json[0], mean_json[0]],
   mode: 'lines',
   name: 'Centre',
   showlegend: true,
@@ -122,13 +115,13 @@ var data = [Data,Viol,CL,Centre,histo]
 
 // layout
 var layout = {
-  title: 'Basic SPC Chart',
+  title: 'Basic SPC Chart From CSV',
   xaxis: {
     domain: [0, 0.7], // 0 to 70% of width
     zeroline: false
   },
   yaxis: {
-    range: [-10,1],
+    range: [((mean_json[0] - (3 * stdv_json[0]))) - 5, (mean_json[0] + (3 * stdv_json[0])) + 5],
     zeroline: false
   },
   xaxis2: {
